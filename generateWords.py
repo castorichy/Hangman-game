@@ -1,8 +1,7 @@
 import time
 import random as r
-
 class GenerateWords:
-    sorted_words= []
+    """ Generates sorted worsds to be used in hangman game """
 
     def __read_file(self, line_no: int):
         """ Reads the file and return a word in a given line """
@@ -21,20 +20,53 @@ class GenerateWords:
             words.append(rd)
         return words
 
-    def __sort_by_length(self):
+    def __sort_by_length(self)-> list:
         """ Sorts the extracted words by length using bubble sort algorithm and returns sor        ted list """
-        list = self.__random_select_line()
-        for iter_num in range(len(list)-1,0,-1):
-          for idx in range(iter_num):
-             if len(list[idx])>len(list[idx+1]):
-                temp = list[idx]
-                list[idx] = list[idx+1]
-                list[idx+1] = temp
-        return list
+        words = self.__random_select_line()
+        for iter_num in range(len(words)-1,0,-1):
+            for idx in range(iter_num):
+                if len(words[idx])>len(words[idx+1]):
+                    temp = words[idx]
+                    words[idx] = words[idx+1]
+                    words[idx+1] = temp
+        return words
 
     def get_word_list(self):
         return self.__sort_by_length()
 
+
+class HangmanControler:
+    """ Controls all algorithm and validates game artributes """
+    def __init__(self) -> None:
+        super().__init__()
+
+
+class PlayHangman(GenerateWords, HangmanControler):
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.word_list = self.get_word_list()
+
+    def word_in_box(self):
+        """ Counts the words and print them in a box"""
+        for word in self.word_list:
+            rang = len(word)
+            for i in range(rang):
+                print(" --- ", end=" ")
+            print()
+
+            for i in range(rang):
+                print(f"| {word[i]} |", end=" ")
+            print()
+
+            for i in range(rang):
+                print(" --- ", end=" ")
+            print()
+
+
+
+
 if __name__ == "__main__":
-    GenerateWords()
+    pl = PlayHangman()
+    pl.word_in_box()
 
