@@ -42,6 +42,7 @@ class HangmanControler:
 
 
 class PlayHangman(GenerateWords, HangmanControler):
+    """ it is the main presentation controler. in give output and input """
 
     def __init__(self) -> None:
         super().__init__()
@@ -52,15 +53,15 @@ class PlayHangman(GenerateWords, HangmanControler):
         for word in self.word_list:
             rang = len(word)
             for i in range(rang):
-                print(" --- ", end=" ")
+                print("\t --- ", end=" ")
             print()
 
             for i in range(rang):
-                print(f"| {word[i]} |", end=" ")
+                print(f"\t| {word[i]} |", end=" ")
             print()
 
             for i in range(rang):
-                print(" --- ", end=" ")
+                print("\t --- ", end=" ")
             print()
 
 
