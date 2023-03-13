@@ -1,30 +1,13 @@
+w_l = ["hello", "sweet", "sweetest"]
 
-from extractWords import Test
-
-t = Test()
-
-main_word = t.main_word()
-words = t.data
-found_word = ''
-
-for i in range(1000):
-    for ch in words[i]:
-        if ch in main_word:
-            found_word += ch
-        else:
-
-            found_word = ""
-    if len(found_word) >= 3:
-        if found_word in words:
-            print(found_word)
-            found_word = ""
-        else:
-            found_word = ""
-    else:
-        found_word = ""
-
-
-print("word: ", main_word)
-print(found_word)
-
+def word_box_display(word = ""):
+    """ Counts the words and print them in a box"""
+    rang = len(word)
+    for ch in word:
+        print("\t - ", end="")
+        print(f"\t|{ch}|", end="")
+        print("\t - ", end="")
+    print()
+for w in w_l:
+    word_box_display(w)
 

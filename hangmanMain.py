@@ -1,3 +1,4 @@
+import os
 import time
 import random as r
 from extractWords import Test
@@ -7,21 +8,15 @@ class GenerateWords(Test):
 
     __word_list = []
     __sorted_word_list = []
+    choice_word = ""
 
     def __init__(self) -> None:
         super().__init__()
         self.set_got_word_list()
         self.__word_list = GenerateWords.__word_list
         self.__word_list = self.get_got_word_list()
-        #print(self.__word_list)
-
-
-        ''''   def __read_file(self, line_no: int):
-        """ Reads the file and return a word in a given line """
-        data = []
-        with open("words.txt", "r") as f:
-            data = f.read().split("\n")
-        return data[line_no]'''
+        #self.choice_word = GenerateWords.__choice_word
+        #self.choice_word = self.choice_word_shuffal()
 
     def __random_select_line(self):
         """ Randomly selects lines to extracted from the file """
@@ -42,45 +37,83 @@ class GenerateWords(Test):
                     temp = words[idx]
                     words[idx] = words[idx+1]
                     words[idx+1] = temp
-        return list(set(words))
+        words = list(set(words))
+        if len(words) < 3:
+            self.__init__()
+        else:
+            return words
 
     def set_word_list(self):
-
         self.__sorted_word_list = self.__sort_by_length()
 
     def get_word_list(self):
         return self.__sorted_word_list
-
-    '''   def gen_hint_latters(self):
-            """ Generates hint that will help play to gess latters found in the words """
-        words = self.wordList
-        #print(words)
-        join_words = "".join(words).lower()
-        hint_latters = []
-        for ch in join_words:
-            hint_latters.append(ch)
-
-        hint_lat = "".join(set(hint_latters))
-
-        return hint_lat'''
+    def set_choice_word(self):
+        self.choice_word = self.choice_word_shuffal()
 
 
-class HangmanControler:
+class HangmanControler(GenerateWords):
     """ Controls all algorithm and validates game artributes """
-    def __init__(self) -> None:
-        super().__init__()
-
-
-class PlayHangman(GenerateWords, HangmanControler):
-    """ it is the main presentation controler. in give output and input """
-
     def __init__(self) -> None:
         super().__init__()
         self.word_list = self.get_word_list()
 
-    def word_in_box(self):
+    def choices_display_6(self):
+        """ this is reshuffling precentetion """
+        ch = self.choice_word
+        print("\t\t   -  \t   - ")
+        print(f"\t\t  |{ch[0]}| \t  |{ch[1]}|")
+        print("\t\t   -  \t   - ")
+
+        print("\t    -  \t\t\t  - ")
+        print(f"\t   |{ch[2]}| \t\t\t |{ch[3]}|")
+        print("\t    -  \t\t\t  - ")
+
+        print("\t\t   -  \t   - ")
+        print(f"\t\t  |{ch[4]}| \t  |{ch[5]}|")
+        print("\t\t   -  \t   - ")
+
+    def choices_display_5(self):
+        """ this is reshuffling precentetion """
+        self.set_choice_word()
+        ch = self.choice_word
+        print("\t\t   - ")
+        print(f"\t\t  |{ch[0]}| ")
+        print("\t\t   - ")
+
+        print("\t    -  \t\t\t  - ")
+        print(f"\t   |{ch[1]}| \t\t\t |{ch[2]}|")
+        print("\t    -  \t\t\t  - ")
+
+        print("\t\t   -  \t   - ")
+        print(f"\t\t  |{ch[3]}| \t  |{ch[4]}|")
+        print("\t\t   -  \t   - ")
+
+    def choices_display_4(self):
+        """ this is reshuffling precentetion """
+        self.set_choice_word()
+        ch = self.choice_word
+        print("\t\t   -  \t   - ")
+        print(f"\t\t  |{ch[0]}| \t  |{ch[1]}|")
+        print("\t\t   -  \t   - ")
+
+        print("\t\t   -  \t   - ")
+        print(f"\t\t  |{ch[2]}| \t  |{ch[3]}|")
+        print("\t\t   -  \t   - ")
+
+    def shuffle_msg_display(self):
+        print("""\
+        \tCHOOSE LATTERS THAT FORM A WORD FROM TABLE BELLOW
+         Press
+         * (Q/q) Quit
+         * (enter) shuffle words
+         * (r/R) to reset game
+
+              """)
+
+    def word_box_display(self):
         """ Counts the words and print them in a box"""
-        for word in self.word_list:
+        for word in self.__word_list:
             rang = len(word)
             for i in range(rang):
                 print("\t --- ", end=" ")
@@ -97,10 +130,53 @@ class PlayHangman(GenerateWords, HangmanControler):
 
 
 
-if __name__ == "__main__":
-    pl = PlayHangman()
-    pl.set_word_list()
-    print(pl.word_main)
-    print(pl.get_word_list())
-   # print(pl.gen_hint_latters())
+
+
+class PlayHangman(HangmanControler):
+    """ it is the main presentation controler. in give output and input """
+
+    def __init__(self) -> None:
+        super().__init__()
+
+    def display_shuffle(self):
+        if len(self.choice_word) == 4:
+            self.choices_display_4()
+        elif len(self.choice_word) == 5:
+            self.choices_display_5()
+        elif len(self.choice_word) == 6:
+            self.choices_display_6()
+        else:
+            print("Display Not Available")
+
+    def user_choice(self):
+        os.system("clear")
+        print("LATTERS THAT FORM A WORD FROM TABLE BELLOW Press")
+        self.set_choice_word()
+        self.display_shuffle()
+        choice = input("""\
+* (Q/q) Quit
+* (enter without Space) shuffle words
+* (r/R) to reset game
+    You Guess: """).lower()
+
+        match choice:
+            case "q":
+                exit()
+            case "":
+                self.set_choice_word()
+                self.display_shuffle()
+                self.user_choice()
+            case "r":
+                pass
+            case other:
+                self.validate_user_choice(choice)
+
+
+    def validate_user_choice(self, choice):
+        pass
+
+
+tl = PlayHangman()
+tl.display_shuffle()
+tl.user_choice()
 

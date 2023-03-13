@@ -12,6 +12,7 @@ class Test:
     search_word = []
     got_word_list = []
 
+
     main_data = []
     word_main = ""
 
@@ -22,7 +23,7 @@ class Test:
             self.data = f.read().split("\n")
 
         for word in self.data:
-            if len(word) >= 4 and len(word) <= 6:
+            if len(word) == 6:
                self.search_word.append(word)
 
         self.word_main = r.choice(self.search_word)
@@ -50,19 +51,36 @@ class Test:
         if self.word_main not in self.got_word_list:
             self.got_word_list.append(self.word_main)
         else:
+            print(self.got_word_list)
             self.got_word_list = list(set(self.got_word_list))
 
-    def choice_word_shuffal(self):
+    def main_word_reshafal(self):
         """ Randomly Reshufles main_word atribute """
-        word = self.word_main
-        r.seed()
-        shaffle_word = []
-        for ch in word:
-            shaffle_word.append(ch)
-        r.shuffle(shaffle_word)
+        word = ""
+        count = 0
+        print(self.word_main)
+        for i in range(6):
+            while True:
+                w = r.choice(self.word_main)
+                if w not in word:
+                    word += w
+                else:
+                    for ch in self.word_main:
+                        if w == ch:
+                            count += 1
+                        continue
+                    if count > 1:
+                        word += w
+                    break
+        #check unwanted letters
+        """ TO be continued """
 
-        shuffled_word = "".join(shaffle_word)
-        return shuffled_word
+        print(word)
+        self.word_main = word
+        """ Returns Reshaffled word """
+        return self.word_main
+
+        #remove Duplicate in the got_word_list
 
 
     def set_got_word_list(self):
@@ -73,6 +91,7 @@ class Test:
     def get_got_word_list(self):
         """ returns got_word_list artribute
         Run this function before running get_got_word_list"""
+
         return self.got_word_list
 
 
