@@ -1,16 +1,13 @@
 
-import random as r
-import time
-
-r.seed()
-letters = ""
-
-for i in range(6):
-    letters += r.choice("qwertyuioplkjhgfdsazxcvbnm")
-
-data = []
-with open("words.txt", "r") as f:
-    data = f.read().split("\n")
+words = ["Hello", "Lol", "kella"]
 
 
-print(letters)
+join_word = "".join(words).lower()
+
+ch_list = []
+
+for ch in join_word:
+    ch_list.append(ch)
+
+print(set(ch_list))
+

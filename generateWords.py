@@ -1,7 +1,15 @@
 import time
 import random as r
+
 class GenerateWords:
     """ Generates sorted worsds to be used in hangman game """
+    __match_words = ""
+    __wordList = []
+
+    def __init__(self) -> None:
+        self.match_words = GenerateWords.__match_words
+        self.wordList = GenerateWords.__wordList
+
 
     def __read_file(self, line_no: int):
         """ Reads the file and return a word in a given line """
@@ -30,9 +38,24 @@ class GenerateWords:
                     words[idx] = words[idx+1]
                     words[idx+1] = temp
         return words
+    def set_word_list(self):
+        self.wordList = self.__sort_by_length()
 
     def get_word_list(self):
-        return self.__sort_by_length()
+        return self.wordList
+
+    def gen_hint_latters(self):
+        """ Generates hint that will help play to gess latters found in the words """
+        words = self.wordList
+        #print(words)
+        join_words = "".join(words).lower()
+        hint_latters = []
+        for ch in join_words:
+            hint_latters.append(ch)
+
+        hint_lat = "".join(set(hint_latters))
+
+        return hint_lat
 
 
 class HangmanControler:
@@ -69,5 +92,7 @@ class PlayHangman(GenerateWords, HangmanControler):
 
 if __name__ == "__main__":
     pl = PlayHangman()
-    pl.word_in_box()
+    pl.set_word_list()
+    print(pl.get_word_list())
+    print(pl.gen_hint_latters())
 
