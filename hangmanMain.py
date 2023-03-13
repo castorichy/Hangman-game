@@ -1,18 +1,22 @@
 import time
 import random as r
+from extractWords import Test
 
-
-class GenerateWords:
+class GenerateWords(Test):
     """ Generates sorted worsds to be used in hangman game """
-    __match_words = ""
-    __wordList = []
+
+    __word_list = []
+    __sorted_word_list = []
 
     def __init__(self) -> None:
-        self.match_words = GenerateWords.__match_words
-        self.wordList = GenerateWords.__wordList
+        super().__init__()
+        self.set_got_word_list()
+        self.__word_list = GenerateWords.__word_list
+        self.__word_list = self.get_got_word_list()
+        #print(self.__word_list)
 
 
-     ''''   def __read_file(self, line_no: int):
+        ''''   def __read_file(self, line_no: int):
         """ Reads the file and return a word in a given line """
         data = []
         with open("words.txt", "r") as f:
@@ -20,32 +24,32 @@ class GenerateWords:
         return data[line_no]'''
 
     def __random_select_line(self):
-        """ Randomly selects lines to extracted form the file """
+        """ Randomly selects lines to extracted from the file """
         words = []
         r.seed()
         for i in range(0, 6):
-            line = r.randint(1, 1001)
-            rd = self.__read_file(line)
-            words.append(rd)
+            wor = r.choice(self.__word_list)
+            words.append(wor)
         return words
 
     def __sort_by_length(self)-> list:
         """ Sorts the extracted words by length using bubble sort algorithm and returns sor        ted list """
         words = self.__random_select_line()
+
         for iter_num in range(len(words)-1,0,-1):
             for idx in range(iter_num):
                 if len(words[idx])>len(words[idx+1]):
                     temp = words[idx]
                     words[idx] = words[idx+1]
                     words[idx+1] = temp
-        return words
+        return list(set(words))
 
     def set_word_list(self):
 
-        self.wordList = self.__sort_by_length()
+        self.__sorted_word_list = self.__sort_by_length()
 
     def get_word_list(self):
-        return self.wordList
+        return self.__sorted_word_list
 
     '''   def gen_hint_latters(self):
             """ Generates hint that will help play to gess latters found in the words """
@@ -96,6 +100,7 @@ class PlayHangman(GenerateWords, HangmanControler):
 if __name__ == "__main__":
     pl = PlayHangman()
     pl.set_word_list()
+    print(pl.word_main)
     print(pl.get_word_list())
-    print(pl.gen_hint_latters())
+   # print(pl.gen_hint_latters())
 

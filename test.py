@@ -1,5 +1,5 @@
 
-from squareShape import Test
+from extractWords import Test
 
 t = Test()
 

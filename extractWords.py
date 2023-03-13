@@ -49,6 +49,7 @@ class Test:
             else:
                 got_word = ""
         #remove Duplicate in the got_word_list
+        print(self.got_word_list)
         self.got_word_list = list(set(self.got_word_list))
 
     def set_got_word_list(self):
