@@ -2,8 +2,9 @@ import os
 import time
 import random as r
 from extractWords import Test
+from ReadJson import ReadJson
 
-class GenerateWords(Test):
+class GenerateWords(Test, ReadJson):
     """ Generates sorted worsds to be used in hangman game """
 
     __word_list = []
@@ -13,50 +14,42 @@ class GenerateWords(Test):
     def __init__(self) -> None:
         super().__init__()
         self.set_got_word_list()
-        self.__word_list = GenerateWords.__word_list
-        self.__word_list = self.get_got_word_list()
-        #self.choice_word = GenerateWords.__choice_word
-        #self.choice_word = self.choice_word_shuffal()
+        self.word_list = GenerateWords.__word_list
+        self.word_list = self.get_got_word_list() # Generated words
+        self.choice_word = self.get_word_list()
 
-    def __random_select_line(self):
+        '''def __random_select_line(self):
         """ Randomly selects lines to extracted from the file """
         words = []
         r.seed()
         for i in range(0, 6):
             wor = r.choice(self.__word_list)
             words.append(wor)
-        return words
+        return words'''
 
-    def __sort_by_length(self)-> list:
-        """ Sorts the extracted words by length using bubble sort algorithm and returns sor        ted list """
-        words = self.__random_select_line()
-
-        for iter_num in range(len(words)-1,0,-1):
-            for idx in range(iter_num):
-                if len(words[idx])>len(words[idx+1]):
-                    temp = words[idx]
-                    words[idx] = words[idx+1]
-                    words[idx+1] = temp
-        words = list(set(words))
-        if len(words) < 3:
-            self.__init__()
-        else:
-            return words
 
     def set_word_list(self):
-        self.__sorted_word_list = self.__sort_by_length()
+        self.set_got_word_list()
+        #self.__sorted_word_list = self.__sort_by_length()
+        #print(self.__sorted_word_list)
 
     def get_word_list(self):
         return self.__sorted_word_list
+
     def set_choice_word(self):
         self.choice_word = self.choice_word_shuffal()
+
+    def get_choice_word(self):
+        return self.choice_word
 
 
 class HangmanControler(GenerateWords):
     """ Controls all algorithm and validates game artributes """
     def __init__(self) -> None:
         super().__init__()
-        self.word_list = self.get_word_list()
+        #self.set_got_word_list()
+        #self.word_list = self.get_got_word_list()
+        #print(self.word_list)
 
     def choices_display_6(self):
         """ this is reshuffling precentetion """
@@ -75,7 +68,7 @@ class HangmanControler(GenerateWords):
 
     def choices_display_5(self):
         """ this is reshuffling precentetion """
-        self.set_choice_word()
+        #self.set_choice_word()
         ch = self.choice_word
         print("\t\t   - ")
         print(f"\t\t  |{ch[0]}| ")
@@ -91,7 +84,7 @@ class HangmanControler(GenerateWords):
 
     def choices_display_4(self):
         """ this is reshuffling precentetion """
-        self.set_choice_word()
+       # self.set_choice_word()
         ch = self.choice_word
         print("\t\t   -  \t   - ")
         print(f"\t\t  |{ch[0]}| \t  |{ch[1]}|")
@@ -110,27 +103,87 @@ class HangmanControler(GenerateWords):
          * (r/R) to reset game
 
               """)
+    def dispay_correct_word_2(self, cor_word = ""):
+        if len(cor_word) == 0:
+            print("\t  ---   --- ")
+            print(f"\t |   | |   |")
+            print("\t  ---   ---")
+        else:
+            print("\t ---   --- ")
+            print(f"\t| {cor_word[0]} | | {cor_word[1]} |")
+            print("\t ---   ---")
+    def dispay_correct_word_3(self, cor_word = ""):
+        if len(cor_word) == 0:
+            print("\t  ---   ---   --- ")
+            print(f"\t |   | |   | |   |")
+            print("\t  ---   ---   ---")
+        else:
+            print("\t ---   ---   --- ")
+            print(f"\t| {cor_word[0]} | | {cor_word[1]} | | {cor_word[2]} |")
+            print("\t ---   ---   ---")
 
-    def word_box_display(self):
-        """ Counts the words and print them in a box"""
-        for word in self.__word_list:
-            rang = len(word)
-            for i in range(rang):
-                print("\t --- ", end=" ")
-            print()
+    def dispay_correct_word_4(self, cor_word = ""):
+        if len(cor_word) == 0:
+            print("\t  ---   ---   ---   ---")
+            print(f"\t |   | |   | |   | |   |")
+            print("\t  ---   ---   ---   ---")
+        else:
+            print("\t ---   ---   ---   ---  ")
+            print(f"\t| {cor_word[0]} | | {cor_word[1]} | | {cor_word[2]} | | {cor_word[3]} |")
+            print("\t ---   ---   ---   ---")
 
-            for i in range(rang):
-                print(f"\t| {word[i]} |", end=" ")
-            print()
+    def dispay_correct_word_5(self, cor_word = ""):
+        if len(cor_word) == 0:
+            print("\t  ---   ---   ---   ---   ---")
+            print(f"\t |   | |   | |   | |   | |   |")
+            print("\t  ---   ---   ---   ---   ---")
+        else:
+            print("\t ---   ---   ---   ---   ---  ")
+            print(f"\t| {cor_word[0]} | | {cor_word[1]} | | {cor_word[2]} | | {cor_word[3]} | | {cor_word[4]} |")
+            print("\t ---   ---   ---   ---   ---")
+    def dispay_correct_word_6(self, cor_word = ""):
+        if len(cor_word) == 0:
+            print("\t  ---   ---   ---   ---   ---   ---")
+            print(f"\t |   | |   | |   | |   | |   | |   |")
+            print("\t  ---   ---   ---   ---   ---   ---")
+        else:
+            print("\t ---   ---   ---   ---   ---   ---  ")
+            print(f"\t| {cor_word[0]} | | {cor_word[1]} | | {cor_word[2]} | | {cor_word[3]} | | {cor_word[4]} | | {cor_word[5]} |")
+            print("\t ---   ---   ---   ---   ---   ---")
 
-            for i in range(rang):
-                print("\t --- ", end=" ")
-            print()
 
+    def validate_empty_value(self, idx):
 
+        match len(self.word_list[int(idx) - 1]):
+            case 2:
+                self.dispay_correct_word_2("")
+            case 3:
+                self.dispay_correct_word_3("")
+            case 4:
+                self.dispay_correct_word_4("")
+            case 5:
+                self.dispay_correct_word_5("")
+            case 6:
+                self.dispay_correct_word_6("")
 
-
-
+    def Display_homePage(self):
+        for i in range(1, 7):
+            val = self.readJson(i)
+            idx = val[0]
+            value = val[1]
+            match len(val[1]):
+                case 0:
+                    self.validate_empty_value(idx)
+                case 2:
+                    self.dispay_correct_word_2(val[1])
+                case 3:
+                    self.dispay_correct_word_3(val[1])
+                case 4:
+                    self.dispay_correct_word_4(val[1])
+                case 5:
+                    self.dispay_correct_word_5(val[1])
+                case 6:
+                    self.dispay_correct_word_6(val[1])
 
 class PlayHangman(HangmanControler):
     """ it is the main presentation controler. in give output and input """
@@ -150,33 +203,49 @@ class PlayHangman(HangmanControler):
 
     def user_choice(self):
         os.system("clear")
+        self.Display_homePage()
         print("LATTERS THAT FORM A WORD FROM TABLE BELLOW Press")
         self.set_choice_word()
         self.display_shuffle()
-        choice = input("""\
-* (Q/q) Quit
-* (enter without Space) shuffle words
-* (r/R) to reset game
-    You Guess: """).lower()
+        print(self.word_list)
+        while True:
+            choice = input("""\
+    * (Q/q) Quit
+    * (enter without Space) shuffle words
+    * (r/R) to res
+    t game
+        You Guess: """).lower()
 
-        match choice:
-            case "q":
-                exit()
-            case "":
-                self.set_choice_word()
-                self.display_shuffle()
-                self.user_choice()
-            case "r":
-                pass
-            case other:
-                self.validate_user_choice(choice)
+            match choice:
+                case "q":
+                    exit()
+                case "":
+                    self.Display_homePage()
+                    self.set_choice_word()
+                    self.display_shuffle()
+                    self.user_choice()
+                case "r":
+                    self.resetJson()
+                    self.user_choice()
+                case other:
+                    if self.validate_user_choice(choice) != 1:
+                        self.user_choice()
+                    else:
+                        break
 
 
     def validate_user_choice(self, choice):
-        pass
+        if choice in self.word_list:
+            self.check_index(choice)
+        else:
+            return -1
+
+    def check_index(self, word):
+        for idx, elem in enumerate(self.word_list):
+            if word == elem:
+                self.writeJson({f"{idx + 1}": word})
 
 
 tl = PlayHangman()
-tl.display_shuffle()
 tl.user_choice()
-
+print(tl.word_list)
